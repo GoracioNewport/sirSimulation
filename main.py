@@ -7,15 +7,17 @@ import pygame
 
 if __name__ == '__main__':
 
-    screen = pygame.display.set_mode(config.size)
-
     clock = pygame.time.Clock()
     pygame.init()
 
 
+    # areas = [
+    #     Area(50, 0, 0, config.width / 2, config.height / 2),
+    #     Area(50, config.width / 2, config.height / 2, config.width, config.height)
+    # ]
+
     areas = [
-        Area(50, 0, 0, config.width / 2, config.height / 2),
-        Area(50, config.width / 2, config.height / 2, config.width, config.height)
+        Area(100, 0, 0, config.width, config.height)
     ]
 
     while True:
@@ -31,11 +33,11 @@ if __name__ == '__main__':
                     if area.topLeftBound[0] <= x <= area.bottomRightBound[0] and area.topLeftBound[1] <= y <= area.bottomRightBound[1]:
                         area.infectRandom()
 
-        screen.fill(config.black)
+        # config.screen.fill(config.colorBlack)
 
         for area in areas:
             area.update()
-            screen.blit(area.image, area.topLeftBound)
+            config.screen.blit(area.image, area.topLeftBound)
 
 
         pygame.display.flip()
