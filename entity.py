@@ -9,9 +9,11 @@ from event import Event
 
 
 class Entity:
-    def __init__(self, homeArea):
+    def __init__(self, homeArea, id, hasMask):
         self.r = 5
+        self.id = id
         self.color = config.colorSusceptible
+        self.mask = hasMask
         self.step = [.0, .0]
         self.speed = 3
         self.area = homeArea
@@ -101,7 +103,7 @@ class Entity:
         for entity in self.area.entities:
             dist = math.hypot(entity.box.x - self.box.x, entity.box.y - self.box.y)
             if dist <= config.spreadRadius and entity.state == config.State.SUSCEPTIBLE:
-                if random() < config.spreadProbability:
+                if random() < config.spreadProbability[self.mask][entity.mask]:
                     entity.infect()
 
     def recover(self):

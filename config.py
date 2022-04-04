@@ -11,7 +11,7 @@ class State(Enum):
     RECOVERED = auto()
 
 
-size = width, height = 800, 640
+size = width, height = 1000, 800
 
 screen = pygame.display.set_mode(size)
 background = pygame.Surface(size)
@@ -19,15 +19,17 @@ background = pygame.Surface(size)
 
 frameRate = 60
 targetChangeDistance = 10
-boundThickness = 3
 
-diseaseDurationMin = 500
-diseaseDurationMax = 600
-spreadIntervalMin = 100
-spreadIntervalMax = 150
-spreadRadius = 100
+diseaseDurationMin = 5000
+diseaseDurationMax = 6000
+spreadIntervalMin = 30
+spreadIntervalMax = 60
+spreadRadius = 50
 
-spreadProbability = 0.1
+spreadProbability = [
+    [0.9, 0.3],
+    [0.05, 0.015]
+]
 
 colorBlack = (0, 0, 0)
 colorWhite = (255, 255, 255)

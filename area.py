@@ -1,5 +1,5 @@
 import config, pygame
-from random import sample
+from random import sample, random
 from collections import Counter
 
 from config import State
@@ -7,19 +7,21 @@ from entity import Entity
 
 
 class Area:
-    def __init__(self, entityCount, x1, y1, x2, y2):
+    def __init__(self, entityCount, x1, y1, x2, y2, maskProbability):
         self.entityCount = entityCount
         self.topLeftBound = (x1, y1)
         self.bottomRightBound = (x2, y2)
         self.width = x2 - x1
         self.height = y2 - y1
-        self.entities = [Entity(self) for i in range(self.entityCount)]
+        self.maskProbability = maskProbability
+        self.entities = [Entity(self, i, random() <= self.maskProbability) for i in range(self.entityCount)]
         self.image = pygame.Surface((config.width, config.height))
+        self.boundThickness = 3
 
     def update(self):
 
         self.image.fill(config.colorBlack)
-        pygame.draw.rect(self.image, config.colorWhite, pygame.Rect(0, 0, self.width, self.height), config.boundThickness)
+        pygame.draw.rect(self.image, config.colorWhite, pygame.Rect(0, 0, self.width, self.height), self.boundThickness)
 
         for entity in self.entities:
             entity.box = entity.box.move(entity.step)
@@ -30,7 +32,7 @@ class Area:
             entityTypes[entity.state] += 1
             self.image.blit(entity.image, entity.box)
 
-        # print(entityTypes)
+        print(entityTypes)
 
 
 
