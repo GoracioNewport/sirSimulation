@@ -11,8 +11,10 @@ if __name__ == '__main__':
     pygame.init()
 
     areas = [
-        Area(100, 0, 0, config.width, config.height, 0.7)
+        Area(100, 0, 0, config.width, config.height, 0.5)
     ]
+
+    statisticsData = []
 
     while True:
 
@@ -25,13 +27,18 @@ if __name__ == '__main__':
 
                 for area in areas:
                     if area.topLeftBound[0] <= x <= area.bottomRightBound[0] and area.topLeftBound[1] <= y <= area.bottomRightBound[1]:
-                        area.infectRandom()
-
-        # config.screen.fill(config.colorBlack)
+                        area.reset()
 
         for area in areas:
             area.update()
             config.screen.blit(area.image, area.topLeftBound)
+
+            if (area.simulationOver):
+                statisticsData.append(area.diseaseSpan // 100)
+                if (len(statisticsData) >= 15):
+                    print(statisticsData)
+                    sys.exit()
+                area.reset()
 
 
         pygame.display.flip()

@@ -17,6 +17,10 @@ class Area:
         self.entities = [Entity(self, i, random() <= self.maskProbability) for i in range(self.entityCount)]
         self.image = pygame.Surface((config.width, config.height))
         self.boundThickness = 3
+        self.diseaseSpan = 0
+        self.simulationOver = False
+
+        self.infectRandom()
 
     def update(self):
 
@@ -32,7 +36,20 @@ class Area:
             entityTypes[entity.state] += 1
             self.image.blit(entity.image, entity.box)
 
-        print(entityTypes)
+        if entityTypes[config.State.SUSCEPTIBLE] == 0:
+
+            timeCut = 0
+            for entity in self.entities:
+                for event in entity.events:
+                    if (event.type == config.EventType.DISEASE): timeCut = max(timeCut, event.timer)
+
+            self.diseaseSpan += timeCut
+            self.simulationOver = True
+
+        elif entityTypes[config.State.INFECTIOUS]:
+            self.diseaseSpan += 1
+        elif entityTypes[config.State.INFECTIOUS] == 0:
+            self.simulationOver = True
 
 
 
@@ -45,3 +62,10 @@ class Area:
 
         for entity in sample(targets, min(len(targets), count)):
             entity.infect()
+
+    def reset(self):
+
+        self.entities = [Entity(self, i, random() <= self.maskProbability) for i in range(self.entityCount)]
+        self.diseaseSpan = 0
+        self.simulationOver = False
+        self.infectRandom()

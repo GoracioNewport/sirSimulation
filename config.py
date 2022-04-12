@@ -17,13 +17,13 @@ screen = pygame.display.set_mode(size)
 background = pygame.Surface(size)
 
 
-frameRate = 60
+frameRate = 200
 targetChangeDistance = 10
 
-diseaseDurationMin = 5000
-diseaseDurationMax = 6000
+diseaseDurationMin = 1000
+diseaseDurationMax = 1500
 spreadIntervalMin = 30
-spreadIntervalMax = 60
+spreadIntervalMax = 40
 spreadRadius = 50
 
 spreadProbability = [
