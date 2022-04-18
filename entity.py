@@ -9,7 +9,7 @@ from event import Event
 
 
 class Entity:
-    def __init__(self, homeArea, id, hasMask):
+    def __init__(self, homeArea, id = 0, hasMask = False):
         self.r = 5
         self.id = id
         self.color = config.colorSusceptible

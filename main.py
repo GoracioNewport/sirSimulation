@@ -1,6 +1,6 @@
 import config
 
-from area import Area
+from simulations import simulationBasic
 
 import sys
 import pygame
@@ -10,11 +10,9 @@ if __name__ == '__main__':
     clock = pygame.time.Clock()
     pygame.init()
 
-    areas = [
-        Area(150, 0, 0, config.width, config.height, 0)
-    ]
-
-    statisticsData = []
+    simulation = simulationBasic(entityCount=150,
+                        boundBox=((0, 0), (config.width, config.height)),
+                        maskProbability=0)
 
     while True:
 
@@ -33,9 +31,10 @@ if __name__ == '__main__':
                         else:
                             area.infectRandom()
 
-        for area in areas:
-            area.update()
-            config.screen.blit(area.image, area.topLeftBound)
+        config.screen.fill(config.colorBlack)
+        simulation.update()
+
+        config.screen.blit(simulation.image, simulation.topLeftBound)
 
 
         pygame.display.flip()
