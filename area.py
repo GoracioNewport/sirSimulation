@@ -20,7 +20,7 @@ class Area:
         self.diseaseSpan = 0
         self.simulationOver = False
 
-        self.infectRandom()
+        # self.infectRandom()
 
     def update(self):
 
@@ -68,4 +68,4 @@ class Area:
         self.entities = [Entity(self, i, random() <= self.maskProbability) for i in range(self.entityCount)]
         self.diseaseSpan = 0
         self.simulationOver = False
-        self.infectRandom()
+        # self.infectRandom()

@@ -17,7 +17,7 @@ screen = pygame.display.set_mode(size)
 background = pygame.Surface(size)
 
 
-frameRate = 200
+frameRate = 60
 targetChangeDistance = 10
 
 diseaseDurationMin = 1000
