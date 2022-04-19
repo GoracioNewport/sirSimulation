@@ -1,6 +1,5 @@
 import config
-
-from simulations import simulationBasic
+from simulations.simulationBasic import SimulationBasic
 
 import sys
 import pygame
@@ -10,9 +9,7 @@ if __name__ == '__main__':
     clock = pygame.time.Clock()
     pygame.init()
 
-    simulation = simulationBasic(entityCount=150,
-                        boundBox=((0, 0), (config.width, config.height)),
-                        maskProbability=0)
+    simulation = SimulationBasic(entityCount=100, maskProbability=1)
 
     while True:
 
@@ -22,20 +19,12 @@ if __name__ == '__main__':
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = pygame.mouse.get_pos()
-
-                for area in areas:
-                    if area.topLeftBound[0] <= x <= area.bottomRightBound[0] and area.topLeftBound[1] <= y <= area.bottomRightBound[1]:
-                        if event.button == 4:
-                            area.reset()
-
-                        else:
-                            area.infectRandom()
+                simulation.click(x, y, event)
 
         config.screen.fill(config.colorBlack)
         simulation.update()
 
-        config.screen.blit(simulation.image, simulation.topLeftBound)
-
+        config.screen.blit(simulation.image, simulation.boundBox[0])
 
         pygame.display.flip()
         clock.tick(config.frameRate)

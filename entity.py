@@ -19,8 +19,8 @@ class Entity:
         self.area = homeArea
         self.image = pygame.Surface((self.r * 2, self.r * 2))
         self.box = self.image.get_rect(topleft=(
-            randrange(0, (self.area.bottomRightBound[0] - self.area.topLeftBound[0]) - self.image.get_width()),
-            randrange(0, (self.area.bottomRightBound[1] - self.area.topLeftBound[1]) - self.image.get_height())))
+            randrange(0, (self.area.boundBox[1][0] - self.area.boundBox[0][0]) - self.image.get_width()),
+            randrange(0, (self.area.boundBox[1][1] - self.area.boundBox[0][1]) - self.image.get_height())))
 
         self.targetX = 0
         self.targetY = 0
@@ -31,8 +31,8 @@ class Entity:
         self.events = []
 
     def updateTarget(self):
-        self.targetX = randrange(0, (self.area.bottomRightBound[0] - self.area.topLeftBound[0]) - self.image.get_height())
-        self.targetY = randrange(0, (self.area.bottomRightBound[1] - self.area.topLeftBound[1]) - self.image.get_height())
+        self.targetX = randrange(0, (self.area.boundBox[1][0] - self.area.boundBox[0][0]) - self.image.get_height())
+        self.targetY = randrange(0, (self.area.boundBox[1][1] - self.area.boundBox[0][1]) - self.image.get_height())
 
     def updateColor(self):
         if self.state == State.SUSCEPTIBLE:
