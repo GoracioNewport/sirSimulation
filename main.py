@@ -9,7 +9,7 @@ if __name__ == '__main__':
     clock = pygame.time.Clock()
     pygame.init()
 
-    simulation = SimulationBasic(entityCount=100, maskProbability=1)
+    simulation = SimulationBasic(entityCount=100, maskProbability=1, quarantineMode=True)
 
     while True:
 

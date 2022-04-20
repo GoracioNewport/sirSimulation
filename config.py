@@ -4,6 +4,8 @@ import pygame
 class EventType(Enum):
     DISEASE = auto()
     INFECTION_SPREAD = auto()
+    QUARANTINE_CONTAIN = auto()
+    QUARANTINE_RELEASE = auto()
 
 class State(Enum):
     SUSCEPTIBLE = auto()
@@ -22,9 +24,15 @@ targetChangeDistance = 10
 
 diseaseDurationMin = 1000
 diseaseDurationMax = 1500
+diseaseDetectionMin = 200
+diseaseDetectionMax = 300
+
+
 spreadIntervalMin = 30
 spreadIntervalMax = 40
 spreadRadius = 50
+quarantineAreaSize = 100
+globalMargin = 10
 
 spreadProbability = [
     [0.9, 0.3],

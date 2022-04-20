@@ -6,10 +6,12 @@ from entity import Entity
 
 
 class Area:
-    def __init__(self, entityCount=100,
+    def __init__(self,
+                 simulation,
                  boundBox=((0, 0), (config.width, config.height)),
-                 maskProbability=0):
+                 maskProbability=0, entityCount=0):
 
+        self.simulation = simulation
         self.entityCount = 0
         self.boundBox = boundBox
         self.width = boundBox[1][0] - boundBox[0][0]
@@ -21,7 +23,7 @@ class Area:
 
         self.fillEntities(entityCount)
 
-    def fillEntities(self, entityCount = 1):
+    def fillEntities(self, entityCount=1):
 
         for i in range(entityCount):
             self.entities.append(Entity(homeArea=self,
@@ -45,7 +47,7 @@ class Area:
             self.image.blit(entity.image, entity.box)
 
 
-    def infectRandom(self, count = 1):
+    def infectRandom(self, count=1):
 
         targets = []
         for entity in self.entities:

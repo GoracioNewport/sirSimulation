@@ -1,15 +1,13 @@
-import math
-
 import config, pygame
 from config import State
 
 from random import randrange, random
-from math import sqrt
+from math import sqrt, hypot
 from event import Event
 
 
 class Entity:
-    def __init__(self, homeArea, id = 0, hasMask = False):
+    def __init__(self, homeArea, id=0, hasMask=False):
         self.r = 5
         self.id = id
         self.color = config.colorSusceptible
@@ -64,9 +62,7 @@ class Entity:
 
     def updateEvents(self):
 
-        eventsNew = list()
-
-        for event in self.events:
+        for event in self.events[:]:
 
             if not event.tick():
                 if event.type == config.EventType.DISEASE:
@@ -74,11 +70,8 @@ class Entity:
 
                 elif event.type == config.EventType.INFECTION_SPREAD and self.state == config.State.INFECTIOUS:
                     self.spreadInfection()
+                self.events.remove(event)
 
-            else:
-                eventsNew.append(event)
-
-        self.events = eventsNew
 
 
     def update(self):
@@ -91,8 +84,16 @@ class Entity:
 
     def infect(self):
         self.state = State.INFECTIOUS
-        self.events.append(Event(config.EventType.DISEASE, randrange(config.diseaseDurationMin, config.diseaseDurationMax)))
-        self.events.append(Event(config.EventType.INFECTION_SPREAD, randrange(config.spreadIntervalMin, config.spreadIntervalMax)))
+        self.events.append(Event(type=config.EventType.DISEASE,
+                                 timer=randrange(config.diseaseDurationMin, config.diseaseDurationMax)))
+
+        self.events.append(Event(type=config.EventType.INFECTION_SPREAD,
+                                 timer=randrange(config.spreadIntervalMin, config.spreadIntervalMax)))
+
+        if self.area.simulation.quarantineMode:
+            self.area.simulation.events.append(Event(type=config.EventType.QUARANTINE_CONTAIN,
+                                                     timer=randrange(config.diseaseDetectionMin, config.diseaseDetectionMax),
+                                                     data={"target": self, "homeArea": self.area}))
 
     def spreadInfection(self):
         self.events.append(Event(config.EventType.INFECTION_SPREAD, randrange(config.spreadIntervalMin, config.spreadIntervalMax)))
@@ -101,7 +102,7 @@ class Entity:
         # pygame.draw.circle(self.area.image, config.colorInfectRing, (self.area.topLeftBound[0] + self.box.x + self.r, self.area.topLeftBound[1] + self.box.y + self.r), config.spreadRadius)
 
         for entity in self.area.entities:
-            dist = math.hypot(entity.box.x - self.box.x, entity.box.y - self.box.y)
+            dist = hypot(entity.box.x - self.box.x, entity.box.y - self.box.y)
             if dist <= config.spreadRadius and entity.state == config.State.SUSCEPTIBLE:
                 if random() < config.spreadProbability[self.mask][entity.mask]:
                     entity.infect()

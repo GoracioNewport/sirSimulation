@@ -7,8 +7,11 @@ class SimulationBasic(Simulation):
     def __init__(self,
                  boundBox=((0, 0), (config.width, config.height)),
                  maskProbability=0, quarantineMode=False,
-                 entityCount=100):
+                 entityCount=0):
 
-        super().__init__(boundBox=boundBox, maskProbability=maskProbability, quarantineMode=quarantineMode)
+        super().__init__(boundBox, maskProbability, quarantineMode, entityCount)
 
-        self.areas = [Area(entityCount=entityCount, maskProbability=maskProbability)]
+        self.areas = [Area(self, entityCount=entityCount, maskProbability=maskProbability)]
+
+    def reset(self):
+        self.__init__(self.boundBox, self.maskProbability, self.quarantineMode, self.entityCount)
