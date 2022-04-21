@@ -14,18 +14,21 @@ class Area:
         self.width = x2 - x1
         self.height = y2 - y1
         self.maskProbability = maskProbability
-        self.entities = [Entity(self, i, random() <= self.maskProbability) for i in range(self.entityCount)]
+        self.entities = [Entity(self, i, random() <= 
+            self.maskProbability) for i in range(self.entityCount)]
         self.image = pygame.Surface((config.width, config.height))
         self.boundThickness = 3
         self.diseaseSpan = 0
         self.simulationOver = False
 
-        self.infectRandom()
+        # self.infectRandom()
 
     def update(self):
 
         self.image.fill(config.colorBlack)
-        pygame.draw.rect(self.image, config.colorWhite, pygame.Rect(0, 0, self.width, self.height), self.boundThickness)
+        pygame.draw.rect(self.image, config.colorWhite, 
+            pygame.Rect(0, 0, self.width, self.height), 
+            self.boundThickness)
 
         for entity in self.entities:
             entity.box = entity.box.move(entity.step)
