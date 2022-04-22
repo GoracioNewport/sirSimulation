@@ -1,6 +1,5 @@
 import config
-
-from area import Area
+from simulations.simulationBasic import SimulationBasic
 
 import sys
 import pygame
@@ -10,9 +9,7 @@ if __name__ == '__main__':
     clock = pygame.time.Clock()
     pygame.init()
 
-    areas = [
-        Area(100, 0, 0, config.width, config.height, 1)
-    ]
+    simulation = SimulationBasic(entityCount=100, maskProbability=0, quarantineMode=False)
 
     while True:
 
@@ -22,16 +19,12 @@ if __name__ == '__main__':
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = pygame.mouse.get_pos()
+                simulation.click(x, y, event)
 
-                for area in areas:
-                    if (area.topLeftBound[0] <= x <= area.bottomRightBound[0] and 
-                    area.topLeftBound[1] <= y <= area.bottomRightBound[1]):
-                        area.reset()
+        config.screen.fill(config.colorBlack)
+        simulation.update()
 
-        for area in areas:
-            area.update()
-            config.screen.blit(area.image, area.topLeftBound)
-
+        config.screen.blit(simulation.image, simulation.boundBox[0])
 
         pygame.display.flip()
         clock.tick(config.frameRate)
