@@ -38,6 +38,7 @@ class Area:
 
     def update(self):
 
+
         self.image.fill(config.colorBlack)
         pygame.draw.rect(self.image, config.colorWhite, 
             pygame.Rect(0, 0, self.width, self.height), 
@@ -49,6 +50,7 @@ class Area:
 
         for entity in self.entities:
             entity.update()
+
             self.image.blit(entity.image, entity.box)
 
 

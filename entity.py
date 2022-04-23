@@ -45,6 +45,10 @@ class Entity:
             self.color = config.colorRecovered
 
     def updateCords(self):
+
+        if (self.box.x < 0 or self.box.x > self.area.width or self.box.y < 0 or self.box.y > self.area.height):
+            self.moveToCenter()
+
         distSquared = (self.targetX - self.box.x) * (self.targetX - self.box.x) + (self.targetY - self.box.y) * (self.targetY - self.box.y)
 
         if distSquared <= config.targetChangeDistance * config.targetChangeDistance:
@@ -97,6 +101,10 @@ class Entity:
                                                      timer=randrange(config.diseaseDetectionMin, config.diseaseDetectionMax),
                                                      data={"target": self, "homeArea": self.area}))
 
+    def moveToCenter(self):
+        self.box.x = self.area.width // 2 - self.r
+        self.box.y = self.area.height // 2 - self.r
+ 
     def spreadInfection(self):
         self.events.append(Event(config.EventType.INFECTION_SPREAD, randrange(config.spreadIntervalMin, config.spreadIntervalMax)))
 

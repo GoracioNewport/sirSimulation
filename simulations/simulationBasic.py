@@ -10,8 +10,9 @@ class SimulationBasic(Simulation):
                  entityCount=0):
 
         super().__init__(boundBox, maskProbability, quarantineMode, entityCount)
+        self.areas.append(Area(self, entityCount=entityCount, maskProbability=maskProbability))
 
-        self.areas = [Area(self, entityCount=entityCount, maskProbability=maskProbability)]
+        self.initQuarantineZone()
 
     def reset(self):
         self.__init__(self.boundBox, self.maskProbability, self.quarantineMode, self.entityCount)
