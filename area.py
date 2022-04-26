@@ -9,7 +9,7 @@ class Area:
     def __init__(self,
                  simulation,
                  boundBox=((0, 0), (config.width, config.height)),
-                 maskProbability=0, entityCount=0):
+                 maskProbability=0, entityCount=0, infectFirst=False):
 
         self.simulation = simulation
         self.entityCount = 0
@@ -22,6 +22,9 @@ class Area:
         self.boundThickness = 3
 
         self.fillEntities(entityCount)
+
+        if infectFirst:
+            self.infectRandom()
 
     def fillEntities(self, entityCount=1):
 

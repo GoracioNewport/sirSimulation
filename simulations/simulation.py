@@ -1,6 +1,7 @@
 import config, pygame
 from area import Area
 
+from collections import Counter
 
 class Simulation:
     def __init__(self,
@@ -16,6 +17,10 @@ class Simulation:
         self.width = boundBox[1][0] - boundBox[0][0]
         self.height = boundBox[1][1] - boundBox[0][1]
         self.image = pygame.Surface((self.width, self.height))
+        self.statistics = []
+        self.duration = 0
+
+        self.simulationOver = False
 
         self.quarantineMode = quarantineMode
 
@@ -50,10 +55,28 @@ class Simulation:
 
                 self.events.remove(event)
 
+
+    def updateStatistics(self):
+
+        c = Counter()
+
+        for area in self.areas:
+
+            for entity in area.entities:
+
+                c[entity.state] += 1
+
+        self.duration += 1
+
+        if c[config.State.INFECTIOUS] == 0:
+            self.simulationOver = True
+
+
     def update(self):
 
         self.updateEvents()
         self.updateCords()
+        self.updateStatistics()
 
 
     def click(self, x, y, event):
