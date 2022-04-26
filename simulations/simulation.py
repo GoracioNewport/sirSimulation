@@ -6,13 +6,14 @@ from collections import Counter
 class Simulation:
     def __init__(self,
                  boundBox=((0, 0), (config.width, config.height)),
-                 maskProbability=0, quarantineMode=False, entityCount=0):
+                 maskProbability=0, quarantineMode=False, entityCount=0, visualise=True):
 
         self.maskProbability = maskProbability
         self.boundBox = boundBox
         self.entityCount = entityCount
         self.areas = list()
         self.events = list()
+        self.visualise = visualise
 
         self.width = boundBox[1][0] - boundBox[0][0]
         self.height = boundBox[1][1] - boundBox[0][1]
@@ -29,18 +30,21 @@ class Simulation:
 
     def updateCords(self):
 
-        self.image.fill(config.colorBlack)
+        if self.visualise:
+            self.image.fill(config.colorBlack)
 
         for area in self.areas:
 
             area.update()
-            self.image.blit(area.image, area.boundBox[0])
+            if self.visualise:
+                self.image.blit(area.image, area.boundBox[0])
 
 
-        for entity in self.areas[self.quarantineAreaIndex].entities:
-            if (entity.state == config.State.RECOVERED):
-                self.transferEntity(self.areas[self.quarantineAreaIndex], self.quarantineTransferList[entity], entity)
-                del self.quarantineTransferList[entity]
+        if self.quarantineMode:
+            for entity in self.areas[self.quarantineAreaIndex].entities:
+                if entity.state == config.State.RECOVERED:
+                    self.transferEntity(self.areas[self.quarantineAreaIndex], self.quarantineTransferList[entity], entity)
+                    del self.quarantineTransferList[entity]
 
 
     def updateEvents(self):
@@ -70,6 +74,8 @@ class Simulation:
         if c[config.State.INFECTIOUS] == 0:
             self.simulationOver = True
 
+        print(c)
+
 
     def update(self):
 
@@ -89,7 +95,7 @@ class Simulation:
                     area.infectRandom()
 
     def reset(self):
-        self.__init__(self.boundBox, self.maskProbability, self.quarantineMode)
+        self.__init__(self.boundBox, self.maskProbability, self.quarantineMode, self.entityCount, self.visualise)
 
     def initQuarantineZone(self):
 

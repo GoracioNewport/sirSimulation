@@ -42,10 +42,11 @@ class Area:
     def update(self):
 
 
-        self.image.fill(config.colorBlack)
-        pygame.draw.rect(self.image, config.colorWhite, 
-            pygame.Rect(0, 0, self.width, self.height), 
-            self.boundThickness)
+        if self.simulation.visualise:
+            self.image.fill(config.colorBlack)
+            pygame.draw.rect(self.image, config.colorWhite,
+                pygame.Rect(0, 0, self.width, self.height),
+                self.boundThickness)
 
 
         for entity in self.entities:
@@ -54,7 +55,8 @@ class Area:
         for entity in self.entities:
             entity.update()
 
-            self.image.blit(entity.image, entity.box)
+            if self.simulation.visualise:
+                self.image.blit(entity.image, entity.box)
 
 
     def infectRandom(self, count=1):
