@@ -23,10 +23,8 @@ class Simulation:
         self.simulationOver = False
 
         self.quarantineMode = quarantineMode
-
-        if self.quarantineMode:
-            self.quarantineArea = Area(self, boundBox=((self.boundBox[0][0] + config.globalMargin, self.boundBox[1][1] - config.globalMargin - config.quarantineAreaSize),
-                                                 (self.boundBox[0][0] + config.globalMargin + config.quarantineAreaSize, self.boundBox[1][1] - config.globalMargin)))
+        self.quarantineAreaIndex = -1
+        self.quarantineTransferList = dict()
 
 
     def updateCords(self):
@@ -38,10 +36,11 @@ class Simulation:
             area.update()
             self.image.blit(area.image, area.boundBox[0])
 
-        if self.quarantineMode:
 
-            self.quarantineArea.update()
-            self.image.blit(self.quarantineArea.image, self.quarantineArea.boundBox[0])
+        for entity in self.areas[self.quarantineAreaIndex].entities:
+            if (entity.state == config.State.RECOVERED):
+                self.transferEntity(self.areas[self.quarantineAreaIndex], self.quarantineTransferList[entity], entity)
+                del self.quarantineTransferList[entity]
 
 
     def updateEvents(self):
@@ -50,8 +49,8 @@ class Simulation:
 
             if not event.tick():
                 if event.type == config.EventType.QUARANTINE_CONTAIN:
-                    self.quarantineArea.entities.append(event.data["target"])
-                    event.data["homeArea"].entities.remove(event.data["target"])
+                    self.transferEntity(event.data['homeArea'], self.areas[self.quarantineAreaIndex], event.data['target'])
+                    self.quarantineTransferList[event.data['target']] = event.data['homeArea']
 
                 self.events.remove(event)
 
@@ -91,3 +90,18 @@ class Simulation:
 
     def reset(self):
         self.__init__(self.boundBox, self.maskProbability, self.quarantineMode)
+
+    def initQuarantineZone(self):
+
+        if self.quarantineMode:
+            self.quarantineAreaIndex = len(self.areas)
+            self.areas.append(Area(self, boundBox=((self.boundBox[0][0] + config.globalMargin, self.boundBox[1][1] - config.globalMargin - config.quarantineAreaSize),
+                                                 (self.boundBox[0][0] + config.globalMargin + config.quarantineAreaSize, self.boundBox[1][1] - config.globalMargin))))
+
+    def transferEntity(self, homeArea, newArea, entity):
+
+        newArea.entities.append(entity)
+        homeArea.entities.remove(entity)
+        entity.area = newArea
+        entity.updateTarget()
+        entity.moveToCenter()

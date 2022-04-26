@@ -17,6 +17,9 @@ class Area:
         self.width = boundBox[1][0] - boundBox[0][0]
         self.height = boundBox[1][1] - boundBox[0][1]
         self.maskProbability = maskProbability
+        self.entities = [Entity(self, i, random() <= 
+            self.maskProbability) for i in range(self.entityCount)]
+        self.image = pygame.Surface((config.width, config.height))
         self.entities = []
         self.image = pygame.Surface((self.width, self.height))
         self.boundThickness = 3
@@ -38,15 +41,19 @@ class Area:
 
     def update(self):
 
-        self.image.fill(config.colorBlack)
 
-        pygame.draw.rect(self.image, config.colorWhite, pygame.Rect(0, 0, self.width, self.height), self.boundThickness)
+        self.image.fill(config.colorBlack)
+        pygame.draw.rect(self.image, config.colorWhite, 
+            pygame.Rect(0, 0, self.width, self.height), 
+            self.boundThickness)
+
 
         for entity in self.entities:
             entity.box = entity.box.move(entity.step)
 
         for entity in self.entities:
             entity.update()
+
             self.image.blit(entity.image, entity.box)
 
 
