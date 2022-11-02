@@ -13,4 +13,9 @@ My first serious try at Object-Oriented Programming
 - Environment
 
 ### User-friendly setup/use guide: 
-Coming soon...
+
+- Clone the repositry
+- `pip install -r requirements.txt`
+- Configure simulation variables at **config.py**
+- Configure simulation layout at **main.py**
+- `python3 main.py`
