@@ -74,8 +74,6 @@ class Simulation:
         if c[config.State.INFECTIOUS] == 0:
             self.simulationOver = True
 
-        print(c)
-
 
     def update(self):
 
