@@ -1,6 +1,8 @@
-# Epidemic Simulation
+# Epidemic Simulation 😷
 
-A simple python script for simulating (and visualising) different epidemic scenarios
+A python script for simulating (and visualising) different epidemic scenarios
+
+My first serious try at Object-Oriented Programming
 
 ### Configurable varibales:
 - Disease duration
