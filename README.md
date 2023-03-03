@@ -4,6 +4,8 @@ A python script for simulating (and visualising) different epidemic scenarios
 
 My first serious try at Object-Oriented Programming
 
+![](https://github.com/GoracioNewport/sirSimulation/raw/master/simulation.gif)
+
 ### Configurable varibales:
 - Disease duration
 - Spread radius
